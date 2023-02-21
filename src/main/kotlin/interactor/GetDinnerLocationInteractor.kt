@@ -4,14 +4,11 @@ import model.*
 import kotlin.math.abs
 
 class GetDinnerLocationInteractor(private val dataSource: CostOfLivingDataSource) {
-    fun execute():CityEntity = dataSource.getAllCitiesData()
-        .filter { excludeNoneNorthAmericaCountries(it.country) && excludeNullMealPrices(it.mealsPrices) }
+    fun execute(countryList: List<String>): CityEntity = dataSource.getAllCitiesData()
+        .filter { it.country in countryList && excludeNullMealPrices(it.mealsPrices) }
         .sortedBy { getMealPricesAverage(it.mealsPrices) }
-        .let { getClosestCity(it,getAverageBetweenTwoCities(it.first().mealsPrices, it.last().mealsPrices)) }
+        .let { getClosestCity(it, getAverageBetweenTwoCities(it.first().mealsPrices, it.last().mealsPrices)) }
 }
-
-fun excludeNoneNorthAmericaCountries(country: String) = country in listOf("USA", "Canada", "Mexico")
-
 fun excludeNullMealPrices(mealsPrices: MealsPrices) = mealsPrices.mealInexpensiveRestaurant != null
         && mealsPrices.mealAtMcDonaldSOrEquivalent != null
         && mealsPrices.mealFor2PeopleMidRangeRestaurant != null

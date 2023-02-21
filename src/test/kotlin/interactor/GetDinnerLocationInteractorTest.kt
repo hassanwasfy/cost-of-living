@@ -14,6 +14,7 @@ class GetDinnerLocationInteractorTest {
 
     private lateinit var fakeDataSourceForDinnerLocation: FakeDataSourceForDinnerLocation
     private lateinit var interactor: GetDinnerLocationInteractor
+    private val countryList = listOf("USA", "Canada", "Mexico")
 
     @BeforeEach
     fun setUp() {
@@ -28,7 +29,7 @@ class GetDinnerLocationInteractorTest {
             fakeDataSourceForDinnerLocation.getEmptyFakeDataSource()
         )
         // when
-        val executable = Executable { interactor.execute() }
+        val executable = Executable { interactor.execute(countryList) }
         //then
         assertDoesNotThrow("This block should not throw an exception") {
             executable
@@ -42,7 +43,7 @@ class GetDinnerLocationInteractorTest {
             fakeDataSourceForDinnerLocation.getDataWithNullInMealPrice()
         )
         //when
-        val executable = Executable { interactor.execute() }
+        val executable = Executable { interactor.execute(countryList) }
         //then
         assertThrows(Exception::class.java, executable)
     }
@@ -52,7 +53,7 @@ class GetDinnerLocationInteractorTest {
         // Given
         val interactor = GetDinnerLocationInteractor(fakeDataSourceForDinnerLocation.getMeOtherThanSelected())
         //when
-        val executable = Executable { interactor.execute() }
+        val executable = Executable { interactor.execute(countryList) }
         //then
         assertThrows(Exception::class.java, executable)
     }
@@ -65,7 +66,7 @@ class GetDinnerLocationInteractorTest {
         )
         val expected = "Montreal"
         // When
-        val result = interactor.execute().cityName
+        val result = interactor.execute(countryList).cityName
         // Then
         assertEquals(expected, result)
     }
