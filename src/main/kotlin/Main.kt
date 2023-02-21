@@ -44,7 +44,8 @@ fun main() {
     printSeparationLine()
 
     val getDinnerLocationInteractor = GetDinnerLocationInteractor(dataSource)
-    println(getDinnerLocationInteractor.execute())
+    val countryList = listOf("USA", "Canada", "Mexico")
+    println(getDinnerLocationInteractor.execute(countryList))
     printSeparationLine()
 
     val getTopTenCountriesNamesWithHighestTaxesOnCarbonatedDrinksInteractor =
